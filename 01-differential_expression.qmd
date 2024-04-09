@@ -34,15 +34,11 @@ library(JASPAR2024)
 library(universalmotif)
 ```
 
-Libraries not loading?
-We use `renv` to manage our packages in this project, so you can run `renv::restore()` in the console to set up the package environment from the renv.lock file.
-Note that `renv` is a nice way of making sure that you're using no just the right packages, but the right versions of those packages.
-Check out the renv docs [here](https://rstudio.github.io/renv/articles/renv.html) for more informations and guides.
+Libraries not loading? We use `renv` to manage our packages in this project, so you can run `renv::restore()` in the console to set up the package environment from the renv.lock file. Note that `renv` is a nice way of making sure that you're using no just the right packages, but the right versions of those packages. Check out the renv docs [here](https://rstudio.github.io/renv/articles/renv.html) for more informations and guides.
 
 ## A quick interlude - set up GitHub if needed
 
-When you try to push your changes RStudio will probably prompt you for your GitHub username and password.
-If that works and the push is successful when great, you can skip this chunck, but if you you can quickly set up Git and a PAT token to be able to push your changes.
+When you try to push your changes RStudio will probably prompt you for your GitHub username and password. If that works and the push is successful when great, you can skip this chunck, but if you you can quickly set up Git and a PAT token to be able to push your changes.
 
 ```{r}
 #| eval: false
@@ -62,9 +58,7 @@ Copy your token to your clipboard and then run:
 gitcreds::gitcreds_set()
 ```
 
-And paste the token in.
-You should be able to make pushes to your forked repo now (hopefully!)
-Refer to the excellent [Happy Git with R](https://happygitwithr.com/https-pat) guide if needed or for more info.
+And paste the token in. You should be able to make pushes to your forked repo now (hopefully!) Refer to the excellent [Happy Git with R](https://happygitwithr.com/https-pat) guide if needed or for more info.
 
 ## Load the RNA-Seq data
 
@@ -285,7 +279,7 @@ You can read [the documentation](https://nf-co.re/atacseq/2.1.2) to find out how
 
 Can you find out what settings were used? by looking at the Github repo we can find the code of the [HOMER AnnotatePeaks module](https://github.com/nf-core/atacseq/blob/2.1.2/modules/nf-core/homer/annotatepeaks/main.nf).
 
-Extra arguments are passed in the args variable which in pipelines is usually set in conf/modules.config. We can see that the only extra arg that is set is '-gid', when we look at the HOMER documentation we can't actually find this parameter, it takes some extra googling to find this means "use gene_id instead of transcript_id when parsing GTF file". Welcome to bioinformatics! ;) \
+Extra arguments are passed in the args variable which in pipelines is usually set in conf/modules.config. We can see that the only extra arg that is set is '-gid', when we look at the HOMER documentation we can't actually find this parameter, it takes some extra googling to find this means "use gene_id instead of transcript_id when parsing GTF file". Welcome to bioinformatics! ;)\
 \
 In the nextflow module code we can see the version of HOMER used is homer=4.11 - so we have used whatever the default params are for HOMER v.4.11. We can learn about these by reading HOMER annotatepeaks docs.
 
@@ -494,8 +488,7 @@ results_list <-
   purrr::set_names(list_names)
 ```
 
-Now if this was single cell seq data we'd normally do this kind of analysis per celltype, typically using a differential gene list from a case vs controls disease condition.
-In this case we have samples from different sources, so we'll combine the contrasts using the same sample (i.e. brain vs lung and brain vs liver) merging the pvals and log fold changes.
+Now if this was single cell seq data we'd normally do this kind of analysis per celltype, typically using a differential gene list from a case vs controls disease condition. In this case we have samples from different sources, so we'll combine the contrasts using the same sample (i.e. brain vs lung and brain vs liver) merging the pvals and log fold changes.
 
 Don't worry if this code is a little complex!
 
@@ -542,7 +535,6 @@ table(res$condition)
 # Save data
 readr::write_tsv(res, here::here("data/ppi/differential_genes.tsv"))
 ```
-
 
 # Data for MAGMA
 
@@ -646,7 +638,6 @@ top_genes_list <- map(results_list_entrez, ~.x[order(.x$min_padj), ]) %>%
 # gene list
 top_genes_list <- flatten(top_genes_list)
 ```
-
 
 MAGMA wants an input file with each row denoting a group to test (in single cell seq data this is typically celltypes). The row starts with the group label followed by a space and then a space separated list of the entrez IDs, so now we get our data into that format and save each percent to a different file.
 
